@@ -17,6 +17,8 @@
   }
 
   html, body { height: 100%; }
+  html { scroll-behavior: smooth; }
+  [id] { scroll-margin-top: 72px; }
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -43,19 +45,60 @@
     position: relative;
   }
 
-  /* 顶部导航（紧凑） */
+  /* 顶部导航（参考样式：左 logo + 中间胶囊菜单 + 右侧圆形按钮） */
   nav {
     display: flex; align-items: center; justify-content: space-between;
     padding: 16px 0 12px; gap: 12px; flex-shrink: 0;
   }
-  .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; flex-shrink: 0; }
   .logo-icon {
     width: 36px; height: 36px; border-radius: 11px;
     background: linear-gradient(135deg, #3b82f6, #6366f1);
     display: flex; align-items: center; justify-content: center; font-size: 19px;
     box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
   }
-  .nav-right { display: flex; align-items: center; gap: 10px; }
+
+  /* 中间胶囊导航项 */
+  .nav-menu { display: flex; align-items: center; gap: 6px; }
+  .nav-item {
+    padding: 7px 16px; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 4px 16px rgba(59, 73, 167, 0.07);
+    font-size: 13px; font-weight: 500; color: #475569;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  .nav-item:hover, .nav-item.active {
+    color: var(--blue); font-weight: 600;
+    background: rgba(255, 255, 255, 0.85);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(59, 73, 167, 0.13);
+  }
+
+  .nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  /* 右侧圆形功能按钮 */
+  .nav-icon-btn {
+    width: 34px; height: 34px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 4px 16px rgba(59, 73, 167, 0.07);
+    color: #475569; cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .nav-icon-btn:hover {
+    color: var(--blue);
+    background: rgba(255, 255, 255, 0.85);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(59, 73, 167, 0.13);
+  }
+  .nav-icon-btn svg { display: block; }
+  .nav-icon-btn.spinning svg { animation: spin 0.8s ease; }
+  @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+
   .status-pill {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 7px 14px; border-radius: 999px;
@@ -194,6 +237,7 @@
     .hero-row { grid-template-columns: 1fr; }
     .qr-card { justify-content: flex-start; }
     .features { grid-template-columns: repeat(2, 1fr); }
+    .nav-menu { display: none; }
   }
   @media (max-width: 600px) {
     .features { grid-template-columns: 1fr; }
@@ -215,12 +259,24 @@
       <div class="logo-icon">🧰</div>
       <span>全能工具箱</span>
     </div>
+    <div class="nav-menu">
+      <a class="nav-item active" href="#home">首页</a>
+      <a class="nav-item" href="#features">功能</a>
+      <a class="nav-item" href="#qr">小程序码</a>
+      <a class="nav-item" href="#about">关于</a>
+    </div>
     <div class="nav-right">
+      <button class="nav-icon-btn" id="refreshBtn" title="刷新服务状态" aria-label="刷新服务状态">
+        <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 8a5.5 5.5 0 1 1-1.62-3.9"/><path d="M13.7 1.6v2.9h-2.9"/></svg>
+      </button>
+      <a class="nav-icon-btn" href="https://github.com/Mr-SakuraManJi/Toolbox" target="_blank" rel="noopener" title="GitHub 仓库" aria-label="GitHub 仓库">
+        <svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      </a>
       <div class="status-pill"><span class="dot" id="navDot"></span><span id="navStatus">连接中…</span></div>
     </div>
   </nav>
 
-  <div class="hero-row">
+  <div class="hero-row" id="home">
     <section class="hero">
       <div class="hero-badge">✨ 微信小程序 · 本地自部署版</div>
       <h1>全能工具箱</h1>
@@ -233,7 +289,7 @@
       </div>
     </section>
 
-    <div class="qr-card">
+    <div class="qr-card" id="qr">
       <div class="qr-frame">
         <img id="qrImg" src="wxacode.png" alt="小程序二维码">
       </div>
@@ -246,7 +302,7 @@
     </div>
   </div>
 
-  <div class="features">
+  <div class="features" id="features">
     <div class="feature">
       <div class="icon c-blue">🔄</div>
       <h3>文件格式转换</h3>
@@ -286,7 +342,7 @@
     <div class="server-row"><span class="k">已运行</span><span class="v" id="stUptime">—</span></div>
   </div>
 
-  <footer>
+  <footer id="about">
     <div>全能工具箱 · <a href="api/health" id="healthLink">API 健康检查</a> · <a href="https://mr-sakuramanji.github.io/Blogs/" target="_blank" rel="noopener">个人博客</a> · <a href="https://github.com/Mr-SakuraManJi/Toolbox" target="_blank">GitHub</a></div>
     <div class="stack">
       <span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">MongoDB</span>
@@ -350,6 +406,25 @@
     }, 30000);
     document.getElementById('stUptime').textContent = '0 分钟';
   }
+  // 导航项点击高亮
+  document.querySelectorAll('.nav-item').forEach((item) => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.nav-item').forEach((x) => x.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+
+  // 右上角刷新按钮：转一圈并重新拉取状态
+  const refreshBtn = document.getElementById('refreshBtn');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => {
+      refreshBtn.classList.remove('spinning');
+      void refreshBtn.offsetWidth; // 重置动画
+      refreshBtn.classList.add('spinning');
+      refreshStatus();
+    });
+  }
+
   refreshStatus();
 </script>
 </body>

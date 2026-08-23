@@ -261,7 +261,7 @@
   </div>
 
   <footer>
-    <div>全能工具箱 · 自建后端演示页 · <a href="/api/health">API 健康检查</a> · <a href="https://github.com/Mr-SakuraManJi/Toolbox" target="_blank">GitHub</a></div>
+    <div>全能工具箱 · 自建后端演示页 · <a href="api/health" id="healthLink">API 健康检查</a> · <a href="https://github.com/Mr-SakuraManJi/Toolbox" target="_blank">GitHub</a></div>
     <div class="stack">
       <span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">MongoDB</span>
       <span class="tag">JWT</span><span class="tag">sharp</span><span class="tag">pdf-lib</span>
@@ -306,8 +306,10 @@
         qrBadge.textContent = '🟢 正式版小程序码';
       }
     } catch (e) {
-      // 无后端（静态部署）：隐藏状态卡，导航徽标改为开源标识
+      // 无后端（静态部署）：隐藏状态卡与接口链接，导航徽标改为开源标识
       if (serverCard) serverCard.style.display = 'none';
+      const healthLink = document.getElementById('healthLink');
+      if (healthLink) healthLink.style.display = 'none';
       document.getElementById('navDot').className = 'dot ok';
       document.getElementById('navStatus').textContent = 'GitHub Pages 静态部署';
       // 二维码说明改为静态文案（部署包内自带开发版预览码）
